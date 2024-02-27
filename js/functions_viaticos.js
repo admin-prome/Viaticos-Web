@@ -1,4 +1,6 @@
 
+
+
 /*
 function extraerCoordenadasURLUnicoPunto(url)
 {	
@@ -11,13 +13,14 @@ function extraerCoordenadasURLUnicoPunto(url)
 	
 }
 */
+
 function extraerCoordenadasURLUnicoPunto(url)
 {	
     
-    console.log("en funcion extraer coordenadas");
+   // console.log("en funcion extraer coordenadas");
 
 	if ('map'.indexOf(url) > -1)  {
-    	console.log("existe map");
+    	//console.log("existe map");
 	
 		var partes_url = url.split('map=');
 		partes_url = partes_url[1];
@@ -35,6 +38,7 @@ function extraerCoordenadasURLUnicoPunto(url)
 	}
 
 }
+
 
 
 function actualizar_importe_total_reporte_nuevo_viatico(restar)
@@ -317,8 +321,7 @@ indiceVueltas = 0;
 
 function calcular_distancia_viaje_celu(coord1,coord2,costo_x_km,ida_vuelta)
 {
-    	alert("coordenadas celu", coord1, coord2);
-	parameters =
+    parameters =
             {
                 "waypoint0": coord1,
                 "waypoint1": coord2,
@@ -333,7 +336,7 @@ function calcular_distancia_viaje_celu(coord1,coord2,costo_x_km,ida_vuelta)
        
 	    type: 'get',
         data: parameters,
-        url: '//route.cit.api.here.com/routing/7.2/calculateroute.json',
+        url: 'https://route.cit.api.here.com/routing/7.2/calculateroute.json',
         success: function(response) {
 
             var distancia = Number(response.response.route[0].summary.distance);
@@ -368,7 +371,6 @@ function calcular_distancia_viaje_celu(coord1,coord2,costo_x_km,ida_vuelta)
 // Esta funcion (calcular_distancia_viaje) NO se tocaaaa:
 function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta)
 {
-	alert("coordenadas no se toca", coor1, coord2);	
     parameters =
             {
                 "waypoint0": coord1,
@@ -383,7 +385,7 @@ function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta)
        
 	    type: 'get',
         data: parameters,
-        url: '//route.cit.api.here.com/routing/7.2/calculateroute.json',
+        url: 'https://route.cit.api.here.com/routing/7.2/calculateroute.json',
         success: function(response) {
 
             var distancia = Number(response.response.route[0].summary.distance);

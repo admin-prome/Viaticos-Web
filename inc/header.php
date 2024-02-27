@@ -2,7 +2,7 @@
 <html>
     <head>
 
-        <title>Provincia Microempresas</title>
+        <title>Provincia Microcreditos</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <meta name="language" content="ES" />
         <meta name="keywords" content="Provincia" />
@@ -14,43 +14,156 @@
         <link rel="stylesheet" type="text/css" href="css/reveal.css" />	
         <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css" />   
         <link rel="stylesheet" media="screen" type="text/css" href="css/datepicker.css" />
+        <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 
 
-        <script type="text/javascript" language="javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
         <link rel="stylesheet" type="text/css" href="js/jquery-ui.css" />
         <script type="text/javascript" src="js/jquery.tinycarousel.js"></script>
         <script type="text/javascript" src="js/lightbox.min.js"></script>
-        <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="js/jquery.dataTables.js"></script>
         <script type="text/javascript" src="js/jquery.reveal.js"></script>  
         <script type="text/javascript" src="js/datepicker.js"></script>
-        <script type="text/javascript" src="../js/functions_genericas.js"></script>	
-    
+        <script type="text/javascript" src="js/functions_genericas.js"></script>
+        <script type="text/javascript" src="js/functions_solicitudes.js"></script>
 
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"
+        <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js"
         type="text/javascript" charset="utf-8"></script>
-        <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js"
+        <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js"
         type="text/javascript" charset="utf-8"></script>
         <meta name="viewport" content="initial-scale=1.0, 
               width=device-width" />
-        <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" 
+        <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js" 
         type="text/javascript" charset="utf-8"></script>
-        <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js" 
+        <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js" 
         type="text/javascript" charset="utf-8"></script>
-        <script src="http://js.api.here.com/v3/3.0/mapsjs-ui.js" 
+        <script src="https://js.api.here.com/v3/3.0/mapsjs-ui.js" 
         type="text/javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="UTF-8"
-        src="http://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
-        <link rel="stylesheet" type="text/css" href="http://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+        src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+
+
+        <script type="text/javascript">
+			json_conceptos_viativo = $.parseJSON(<?php json_conceptos_viaticos(); ?>); 
+	
+			CONCEPTO_AUTO 			= json_conceptos_viativo.Auto;
+			CONCEPTO_MOTO 			= json_conceptos_viativo.Moto;
+			CONCEPTO_TAXI_REMIS 	= json_conceptos_viativo.taxi_remis;
+			CONCEPTO_TRANS_PUB 		= json_conceptos_viativo.transporte_publico;
+			
+			ID_ALMUERZO = <?= CONCEPTO_ALMUERZO; ?>;
+			ID_CENA = <?= CONCEPTO_CENA; ?>;
+			ID_GUARDERIA = <?= CONCEPTO_GUARDERIA; ?>;
+                        ID_GUARDERIA_LEY = <?= CONCEPTO_GUARDERIA_LEY; ?>;
+			SOY_DE_CASA_MATRIZ = <?php if(soyDeCasaMatriz($_SESSION['id_sucursal'])) echo 'true'; else echo 'false'; ?>;
+	
+			ORIGEN_SUCURSAL 		= 1;
+			ORIGEN_VISITA_ANTERIOR 	= 2;
+    
+            $(document).ready(function() {
+                
+
+    $.datepicker.regional['es'] = {
+                closeText: 'Cerrar',
+                prevText: '<Ant',
+                nextText: 'Sig>',
+                currentText: 'Hoy',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'MiÃ©rcoles', 'Jueves', 'Viernes', 's&aacute;bado '],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'MiÃ©', 'Juv', 'Vie', 's&aacute;b'],
+                dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'S&aacute;'],
+                weekHeader: 'Sm',
+                dateFormat: 'dd/mm/yy',
+                firstDay:0,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['es']);
+            
+                $('#example').DataTable();
+		
+				<?php
+				if(estoyEnPantallaNuevoViatico())
+				{
+				?>
+					var nro_columna_order = 1;
+				<?php
+				}
+				else
+				{
+				?>
+					var nro_columna_order = 0;
+				<?php
+				}
+				?>
+				
+                    $('#table_datatable').dataTable({
+                    "lengthMenu": [10, 25, 50,100],
+                    "iDisplayLength": 200,
+                    "paging": true,
+                    "ordering": true,
+                    "scrollX": true,
+                    "order": [[nro_columna_order, "desc"]],
+                    "info": false,
+                    "search": false
+
+                });
+                
+                    $('#table_datatable_nuevo_viatico').dataTable({
+                    "lengthMenu": [10, 25, 50,100],
+                    "iDisplayLength": 200,
+                    "paging": true,
+                    "ordering": true,
+                    "scrollX": true,
+                    "order": [[nro_columna_order, "desc"]],
+                    "info": false,
+                    "search": false
+
+                });
+
+
+                $('#boton_logout').click(function() {
+
+                    $("#dialog-confirm").dialog({
+                      resizable: false,
+                        height: 150,
+                        width:450,
+                        modal: true,
+                        buttons:
+                                {
+                                    "Cerrar Sesion": function() {
+                                        $(this).dialog("close");
+                                        window.location = 'logout_process.php';
+                                    },
+                                    "Cancelar": function() {
+                                        $(this).dialog("close");
+                                    }
+                                }
+
+                    });
+
+                });
+
+                $("body").css("display", "none");
+                $("body").fadeIn(850);
+
+                setInterval(opacidadLogo, 2000);
+
+            });
+
+        </script>
 
         <style type="text/css">
 
-            .ui-dialog > .ui-widget-header
-            {
-                background: #9b1629;
-                background-color: #9b1629;
+            .ui-dialog > .ui-widget-header {
+                background: #9aca3c;
+                background-color: #9aca3c;
                 background-image: none;
                 color: black;
             }
@@ -61,12 +174,8 @@
             }
 
         </style>
-        <script type="text/javascript">
-            ORIGEN_SUCURSAL = 1;
-            ORIGEN_VISITA_ANTERIOR = 2;
-        </script>
-    </head>
 
+    </head>
     <body>
 
         <div id="dialog-confirm" title="Procede a cerrar su sesi&oacute;n ?" style="display:none;">Fin de Sesi&oacute;n</div>
@@ -77,8 +186,9 @@
 
                 <div id="head_contenedor">
 
-                    <a href="../../home.php">
-                        <img src="img/logo.png" alt="logo" id="logo_banco_provincia" border="0" />
+                    <a href="home.php">
+                        <img src="img/logo.png" alt="logo"
+                        id="logo_banco_provincia" border="0" />
                     </a>
 
                     <div style="margin-left: 77%;margin-top: -80px;">
@@ -92,40 +202,5 @@
                     </div>
 
                 </div>
-                <div id="menu_administrador">
 
-                    <ul style="margin-left:-3.3%!important;font-weight: bold!important;">
-
-<!--		<li><input class="botones" type="button" id="admin" value="ADMINISTRADOR"/></li>
-<li><input  class="botones" type="button" id="usu" style="display:none;" value="USUARIOS"/></li>
-<li><input class="botones" type="button" id="con" value="CONCEPTOS"/></li>
-<li><input class="botones" type="button" id="suc" value="SUCURSALES"/></li>--> 
-                        <li>
-                            <input class="botones" type="button" id="exp" value="HOME" onclick="window.location = '../../home.php';" />         
-                        </li>
-                        <li>
-                            <input class="botones" type="button" id="exp" value="EXPORTAR" onclick="window.location = 'exportar.php';" />         
-                        </li>
-
-
-                        <li>          
-                            <input class="botones" type="button"  id="ckm" value="TOPE ALMUERZOS" onclick="window.location = 'topes_almuerzo.php';" />          
-                        </li>
-
-                        <li>
-                            <input class="botones" type="button"  id="ckm" value="COSTO KM" onclick="window.location = 'costo_por_km.php';" />
-                        </li>
-
-                        <li>
-                            <input class="botones" type="button"  id="ckm" value="CONSULTAS" onclick="window.location = 'consultas.php';" />
-                        </li>
-                        <li>
-                            <input class="botones" type="button"  id="ckm" value="REPORTES" onclick="window.location = 'reportes.php';" />
-                        </li>
-
-
-
-                    </ul>
-
-                </div>
             </div>

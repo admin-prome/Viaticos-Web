@@ -63,6 +63,7 @@ define('CONCEPTO_TRANS_PUBLICO',8);
 define('CONCEPTO_REFRIGERIO',9);
 define('CONCEPTO_PEAJE',10);
 define('CONCEPTO_ALOJAMIENTO',11);
+define('CONCEPTO_GUARDERIA_LEY'),20);
 
 //Sucursales:
 define('CM','casa_matriz');
@@ -71,11 +72,6 @@ define('ID_CASA_MATRIZ',7186);
 //id usuarios admninistradores
 define('ADMINISTRADOR_1',392);
 define('ADMINISTRADOR_2',387);//ID de proveedores 4 para prueba
-define('ADMINISTRADOR_3',447);//bianchi pablo
-define('ADMINISTRADOR_4',658);//Maria pia
-define('ADMINISTRADOR_5',393);//tgoldber
-define('ADMINISTRADOR_6',519);//yasmin abalsamo
-define('ADMINISTRADOR_7',320);//German Simour|
 
 // GERENTES MATRIZ:
 

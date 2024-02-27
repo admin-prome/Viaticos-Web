@@ -3,13 +3,13 @@
 //DB rendicion:
 define("SERVER_LOCAL", "127.0.0.1");
 define("USER_DB_LOCAL", "root");
-define("PASS_DB_LOCAL", "root123");
+define("PASS_DB_LOCAL", "Micro2020*");
 define("BASE_LOCAL", "rendicion");
 
 // DB rendicion_usuarios ex DB DEL BANCO (PG):
 define("SERVER_BANCO_PERSONAL", "127.0.0.1");
 define("USER_DB_BANCO_PERSONAL", "root");
-define("PASS_DB_BANCO_PERSONAL", "root123");
+define("PASS_DB_BANCO_PERSONAL", "Micro2020*");
 define("BASE_BANCO_PERSONAL", "rendicion_usuarios");
 
 //Formularios de carga de viaticos:
@@ -51,7 +51,7 @@ define('MOTIVO_OTRAS_REUNIONES',7);
 define('MOTIVO_VISITA_SUCURSAL',8);
 define('MOTIVO_VISITA_COBRANZA',9);
 define('MOTIVO_BENEFICIO',10);
-
+	
 define('CONCEPTO_CENA',1);
 define('CONCEPTO_ESTACIONAMIENTO',2);
 define('CONCEPTO_ALMUERZO',3);
@@ -63,24 +63,17 @@ define('CONCEPTO_TRANS_PUBLICO',8);
 define('CONCEPTO_REFRIGERIO',9);
 define('CONCEPTO_PEAJE',10);
 define('CONCEPTO_ALOJAMIENTO',11);
+define('CONCEPTO_GUARDERIA_LEY',20);
 
 //Sucursales:
 define('CM','casa_matriz');
-//define('DEMAS_SUCURSALES','demas_sucursales');
-define('DEMAS_SUCURSALES','casa_matriz');
 define('ID_CASA_MATRIZ',7186);
 
 //id usuarios admninistradores
 define('ADMINISTRADOR_1',392);
 define('ADMINISTRADOR_2',387);//ID de proveedores 4 para prueba
-define('ADMINISTRADOR_3',423);//Anahi Serra
-define('ADMINISTRADOR_4',532);//Solange Altilio
-define('ADMINISTRADOR_5',393);//tgoldber
-define('ADMINISTRADOR_6',386);//yasmin abalsamo
-define('ADMINISTRADOR_7',320);//German Simour
+
 // GERENTES MATRIZ:
 
 define('GERENTE_MATRIZ','gm');//ID de proveedores 4 para prueba
 define('ADMINISTRACION','adm');//ID de proveedores 4 para prueba
-
-define('ID_VERONICA_LANUS',532);

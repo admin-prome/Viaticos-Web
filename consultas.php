@@ -3,10 +3,9 @@ require_once 'inc/checkLogin.php';
 require_once 'inc/const.php';
 
 require_once 'inc/header.php';
-require_once 'inc/funciones/all_functions_sin_admin.php';
 
 // require_once 'inc/menu_administrador.php';
-/*
+
 require_once 'inc/funciones/cargos.php';
 require_once 'inc/funciones/conceptos.php';
 require_once 'inc/funciones/estados.php';
@@ -25,7 +24,6 @@ require_once 'inc/funciones/sucursales.php';
 require_once 'inc/funciones/usuarios.php';
 require_once 'inc/funciones/viaticos.php';
 require_once 'inc/funciones/zonas.php';
-*/
 ?>
 
 <style type="text/css">
@@ -43,7 +41,7 @@ padding-left: 12px;}
    <ul class="busquedas">
     <li><p><b>Inicio:</b></p>	<input style="font-size: 11px;width: 70px;margin-left: 10px;" type="text" name="fecha_desde" id="fecha_desde" value="<?= @ $_POST['fecha_desde']; ?>"  placeholder="<?= obtenerFechaActualDDMMAAAA(); ?>" /></li>
 
-    <li><p><b>Fin:</b></p> 	<input  style="font-size: 11px;width: 70px;margin-left: 10px;" type="text" name="fecha_hasta" id="fecha_hasta" value="<?= @ $_POST['fecha_hasta']; ?>" placeholder="<?= obtenerFechaActualDDMMAAAA(); ?>" /></li>
+    <li><p><b>Fin:</b></p> 	<input style="font-size: 11px;width: 70px;margin-left: 10px;" type="text" name="fecha_hasta" id="fecha_hasta" value="<?= @ $_POST['fecha_hasta']; ?>" placeholder="<?= obtenerFechaActualDDMMAAAA(); ?>" /></li>
 
     <li>
     	<p style="font-weight:bold;">Estado de las solicitudes</p>
@@ -64,10 +62,7 @@ padding-left: 12px;}
        
        <option value="<?= SOLICITUD_EXPORTAR ?>"
        <?php if(@ $_POST['estado'] == SOLICITUD_EXPORTAR) echo 'selected'; ?>>Exportadas</option>
-        
-        <option value="<?= SOLICITUD_RECHAZADA ?>"
-       <?php if(@ $_POST['estado'] == SOLICITUD_RECHAZADA) echo 'selected'; ?>>Rechazadas</option>
-       
+
         </select>
     
     </li> 
@@ -103,14 +98,9 @@ if(sizeof($_POST) > 0)
     $partesFecha = explode('/', $fecha_hasta);
     $fecha_hasta = $partesFecha[2].'-'.$partesFecha[1].'-'.$partesFecha[0].
 	' 23:59:59';
-    
-    
- 
-    
+
     //$solicitudes_a_exportar = obtener_solicitudes_a_exportar($fecha_desde, $fecha_hasta);
-     $solicitudes = obtener_solicitudes($fecha_desde, $fecha_hasta ,$estado);
-    
-    
+    $solicitudes = obtener_solicitudes($fecha_desde, $fecha_hasta ,$estado);
 
     if($solicitudes)
 	{
@@ -132,11 +122,7 @@ if(sizeof($_POST) > 0)
                 <th style="text-align: left!important;">Estado</th>
                 <th style="text-align: left!important;">Importe</th>
                 <th style="text-align: left!important;">comentario</th>
-                <?php if(@ $_POST['estado'] == SOLICITUD_RECHAZADA){ ?>
-                    <th style="text-align: left!important;">Quien rechazo</th>
-                <?php } ?>
                 <th style="text-align: left!important;">&nbsp;</th>
-                
 
             </tr>
             
@@ -147,14 +133,8 @@ if(sizeof($_POST) > 0)
 $divsComentarios = '';
 if ($solicitudes)
 {
-    
-    
-    
-    
     foreach ($solicitudes as $row)
 	{
-        
-
         $importe = obtener_importe_solicitud($row["id"]);
         //echo( obtener_importe_solicitud($row["id"]));
         echo("<tr id='" . $row["id"] . "'>");
@@ -175,46 +155,8 @@ if ($solicitudes)
         } else {
             echo('<td> - </td>');
         }
-        
-         if(@ $_POST['estado'] == SOLICITUD_RECHAZADA){
-        
-        
-            $id_sol = $row['id'];
-            
-            //$fecha_y_hora = presentarFechaDateTime($row["fecha_presentacion"]);
-
-            $rs = obtener_usuario_que_rechaza($id_sol);
-            
-            
-            
-            if(!empty($rs)){
-            
-                 $id_usuario_que_autoriza = $rs[0]['usuario'];
-            
-            
-            
-                  if($id_usuario_que_autoriza != '' || $id_usuario_que_autoriza != null ){
-                      
-                      $nombre_usuario_que_autoriza = obtener_nombre_usuario_BASE_BANCO($id_usuario_que_autoriza);
-
-                     echo("<td>" . $nombre_usuario_que_autoriza . "</td>");
-                 }
-        
-             }
-             else{
-                 
-                 echo("<td>-</td>");
-             }
-        
-         }
-        
         echo("<td> <input id='" . $row['id'] . "' class='botones ver_solicitud' type='button' value='Ver'/></td>");
-        
-        
         echo("</tr> ");
-        
-           
-        
         ?>
 
                         <?php

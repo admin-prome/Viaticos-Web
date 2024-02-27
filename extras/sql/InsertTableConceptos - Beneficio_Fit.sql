@@ -1,0 +1,1 @@
+INSERT INTO `conceptos` (`id`, `descripcion`) VALUES ('12', 'Beneficio Fit');

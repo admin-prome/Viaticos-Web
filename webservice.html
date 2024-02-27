@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Obtener el token.</title>
+	<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+solicitarToken('password','mkplus','mk1234');
+
+function solicitarToken(_grant,_user,_pass)
+{
+	$.ajax({
+	
+		url: 'https://stg-svcs.provinciamicroempresas.com/crmservices/apicrm/token',
+		dataType: 'json',
+		type: 'POST',
+		data: { grant_type: _grant, username: _user, password: _pass },
+		async: true,
+		success: function(_json_result){ 
+                    console.log(_json_result);
+                    console.log(_json_result.access_token);
+			obtenerListadoVisitas(_json_result);
+		}
+	
+	});
+}
+
+function obtenerListadoVisitas(_data_json)
+{
+	var token = _data_json.access_token;
+	var token_type = _data_json.token_type;
+	var expires = _data_json.expires_in;
+	
+	// alert(expires);
+	
+	$.ajax({	
+		
+		url:'https://stg-svcs.provinciamicroempresas.com/crmservices/apicrm/SiteVisitsController/getsitevisitsbyuser/DF26AC9',
+		headers: {	"Accept": "application/json", "Authorization": token_type + ' ' + token },
+		dataType: 'json',
+		type: 'GET',
+		//data: { },
+		async: true,
+		success: function(_json_result){ 
+		
+			var array_respuesta = _json_result;
+			var vt_validas = [];
+			
+			for(var i=0; i< array_respuesta.length; i++)
+			{
+				var valor_vt = array_respuesta[i].toLowerCase();
+				
+				if(valor_vt.substring(0,4) == 'vt -' || valor_vt.substring(0,3) == 'vt-')
+				{
+					var partes_valor_vt = valor_vt.split('-');
+										
+					if(partes_valor_vt.length == 2)
+					{
+						var id_vt = $.trim(partes_valor_vt[1]);
+						vt_validas.push(id_vt);
+					}
+				}
+			}
+			
+			console.log(vt_validas);		
+
+		}
+	
+	});
+}
+
+</script>
+</body>
+</html>

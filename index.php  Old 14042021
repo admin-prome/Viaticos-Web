@@ -1,0 +1,302 @@
+<?php
+
+session_start();
+
+if(isset($_SESSION['autentificado']))
+{
+    header('Location: home.php');
+}
+?>
+
+<html>
+    <head>
+        <title>Rendicion</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
+        <script type="text/javascript" src="js/jquery.noty.js"></script>
+        <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <style type="text/css">
+            
+			.botones
+			{
+                cursor: pointer;
+                margin-: 2%;
+                background: #6a6869;
+                background-image: -webkit-linear-gradient(top, #6a6869, #0b090a);
+                background-image: -moz-linear-gradient(top, #6a6869, #0b090a);
+                background-image: -ms-linear-gradient(top, #6a6869, #0b090a);
+                background-image: -o-linear-gradient(top, #6a6869, #0b090a);
+                background-image: linear-gradient(to bottom, #6a6869, #0b090a);
+                -webkit-border-radius: 10;
+                -moz-border-radius: 10;
+                border-radius: 10px;
+                color: #ffffff;
+                font-size: 16px;
+                padding: 7% 7% 7% 7%;
+                text-decoration: none;
+                height:10%;
+                font-weight: bold;
+                line-height:150px;
+                width:150px;
+                border: solid #c2c2c2 0px;
+                font-family: 'Lato', sans-serif;
+            }
+
+            .botones:hover
+			{
+                cursor: pointer;
+                background: #22282b;
+                background-image: -webkit-linear-gradient(top, #22282b, #6a6f73);
+                background-image: -moz-linear-gradient(top, #22282b, #6a6f73);
+                background-image: -ms-linear-gradient(top, #22282b, #6a6f73);
+                background-image: -o-linear-gradient(top, #22282b, #6a6f73);
+                background-image: linear-gradient(to bottom, #22282b, #6a6f73);
+                text-decoration: none;
+
+            }
+            
+			.login-form-wrap img{margin-left: 0%;}
+            .login-form-wrap p{color:black!important;}
+            
+			.login-form-wrap
+			{
+                background: white;
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5170ad', endColorstr='#355493',GradientType=1 );
+                border:1px solid #2d416d;
+                box-shadow: 0 1px #5670A4 inset,
+                    0 0 10px 5px rgba(0, 0, 0, 0.1);
+                border-radius: 14px;
+                position: relative;
+                width: 250px;
+                height: 300px;
+                margin: 60px auto;
+                padding: 50px 30px 0 30px;
+                text-align: center;
+
+            }
+            
+			#error_user_login{margin-left: 34%;color:white;font-size:bold;}
+        
+		</style>
+		        
+		<div class="login-form-wrap" id="contenedor">
+            <!-- Container with the Sign-In button. -->
+            <img src="img/logo.png" alt="Logo Provincia Microempresas" id="logo_banco_provincia" /><br/>
+            <p style="color:black!important;font-weight: bold;">Sistema de rendici&oacute;n de vi&aacute;ticos</p>
+            <a href='#' onClick='loginMicrosoft();' id="loginText" class="botones">Iniciar sesion</a><br/>
+
+        </div>
+		
+		
+        <span id="error_user_login"></span>
+
+		<!--
+        <a href="#" style="display:none" id="logoutText" target='myIFrame' onClick="myIFrame.location = 'https://www.google.com/accounts/Logout';
+                return false;">  </a>
+        <iframe name='myIFrame' id="myIFrame" style='display:none'></iframe>
+		
+		-->
+
+    </body>
+    <script type="text/javascript">
+
+        function loginMicrosoft() 
+	{
+		var _url = "/microsoft/Authorize.php";
+    		window.location.href = _url;       
+		   		   
+            $('#error_user_login').html('');
+            $('#error_user_login').css('display', 'block');
+        }
+		
+		$(document).ready(function() {
+
+            $("#contenedor").hide(0).delay(200).fadeIn(2500);
+
+        });
+
+        $("body").css("background-color", "#414042");
+        $("#body_container").css("padding-top", "200px");
+        $("p").css("color", "white");
+        $("p").css("text-align", "center");
+        $("p").css("font-family", "arial");
+
+		/*
+		
+        var OAUTHURL = 'https://accounts.google.com/o/oauth2/auth?';
+        var VALIDURL = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=';
+        var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+        var CLIENTID = '419978540067-sdaurf9tbvt5f7hd1a9ko2182fpliiua.apps.googleusercontent.com';
+        var REDIRECT = 'https://rendicion.provinciamicrocreditos.com/';
+        var LOGOUT = 'http://accounts.google.com/Logout';
+        var TYPE = 'token';
+        var _url = OAUTHURL + 'scope=' + SCOPE + '&client_id=' + CLIENTID + '&redirect_uri=' + REDIRECT + '&response_type=' + TYPE;
+        var acToken;
+        var tokenType;
+        var expiresIn;
+        var user;
+        var loggedIn = false;
+		
+		*/
+
+		        
+		/*
+		
+		function login() {
+		    var win = window.open(_url, "windowname1", 'width=800, height=600');
+            var pollTimer = window.setInterval(function() {
+                try {
+                    console.log(win.document.URL);
+                    if (win.document.URL.indexOf(REDIRECT) != -1) {
+                        window.clearInterval(pollTimer);
+                        var url = win.document.URL;
+                        acToken = gup(url, 'access_token');
+                        tokenType = gup(url, 'token_type');
+                        expiresIn = gup(url, 'expires_in');
+                        win.close();
+                        validateToken(acToken);
+                    }
+                } catch (e) {
+                }
+            }, 500);
+            $('#error_user_login').html('');
+            $('#error_user_login').css('display', 'block');
+        }
+
+        function validateToken(token) {
+            $.ajax({
+                url: VALIDURL + token,
+                data: null,
+                success: function(responseText) {
+                    getUserInfo();
+                    loggedIn = true;
+                    //  $('#loginText').hide();
+                    // $('#logoutText').show();
+                },
+                dataType: "jsonp"
+            });
+        }
+
+        function getUserInfo() {
+            $.ajax({
+                url: 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + acToken,
+                data: null,
+                success: function(resp) {
+                    user = resp;
+                   // console.log(user);
+                    chequer_email(user.name, user.email, user.picture);
+                },
+                dataType: "jsonp"
+            });
+
+        }
+
+        function signOut() {
+            gapi.auth.signOut();
+        }
+        function disconnectUser(acToken) {
+            var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token=' + acToken;
+            console.log(revokeUrl);
+            // Realiza una solicitud GET asÃ­ncrona.
+            $.ajax({
+                type: 'GET',
+                url: revokeUrl,
+                async: false,
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(Response) {
+                    //  location.reload('index.php');
+                    console.log(Response);
+                },
+                error: function(e) {
+                    // Gestiona el error
+                    console.log(e);
+                    // Puedes indicar a los usuarios que se desconecten de forma manual si se produce un error
+                    // https://plus.google.com/apps
+                }
+            });
+        }
+		
+        function chequer_email(nombre, email, picture)
+        {
+            var parametros = {
+                'nombre': nombre,
+                'email': email,
+                'picture': picture,
+                'accion': 'validar_usuario'
+            };
+
+            $.ajax({
+                type: 'post',
+                data: parametros,
+                url: 'admin/ajax_peticiones.php',
+                success: function(response) {
+
+
+                    if ('success' == response)
+                    {
+                        window.location = 'home.php';
+                    }
+                    else
+                    { //aca agregar logout de google si no esta en la base
+                        //  alert(acToken);
+                        //  disconnectUser(acToken);
+                        $('#logoutText').trigger('click');
+                        $('#error_user_login').html('El usuario ingresado no pertenece a la base de datos del sistema.').delay('3000').fadeOut('6000');
+                    }
+                }
+            });
+        }
+		
+		*/
+
+        //credits: http://www.netlobo.com/url_query_string_javascript.html
+        function gup(url, name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\#&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(url);
+            if (results == null)
+                return "";
+            else
+                return results[1];
+        }
+
+		setInterval(opacidadLogo, 2000);
+
+        function generate(layout) {
+            var n = noty({
+                text: layout,
+                type: 'alert',
+                dismissQueue: true,
+                layout: layout,
+                theme: 'defaultTheme'
+            });
+            console.log('html: ' + n.options.id);
+        }
+
+        function opacidadLogo()
+        {
+            $("#logo_banco_provincia").fadeTo(2500, 0.3);
+            $("#logo_banco_provincia").fadeTo(2500, 1);
+        }
+
+<?php
+	if(isset($_GET['fin']) && $_GET['fin'] == 1) 
+	{
+    ?>
+        // $('#logoutText').trigger('click');
+		//  window.location = 'index.php';
+		$('#error_user_login').html('Sesion Finalizada').delay('3000').fadeOut('6000');
+		$('#error_user_login').css('display', 'block');
+    <?php
+	}
+?>
+
+    </script>
+    <div style=" position: absolute; bottom: 2px;width: 90%;margin-left: 3.3%;">
+        <p style="color:lightgrey;font-size: 8px; font-family: 'Lato', sans-serif;text-align: center;">&copy; <?php echo date('Y') ?> PROVINCIA MICROCREDITOS</p>
+        <div style="border-bottom: 1px solid lightgray;"></div>
+    </div>
+</html>

@@ -1,4 +1,7 @@
 <?php
+
+
+
 $solicitudes = usuario_solicitud_pendiente($id_usuario);
 
 if ($solicitudes)
@@ -22,7 +25,29 @@ if ($_SESSION['id_estados_gestionar'] == SOLICITUD_AUTORIZADA || $_SESSION['id_e
 } else {
     $solicitudes_a_gestionar = obtener_mis_solicitudes_a_gestionar_BASE_BANCO($id_usuario, $_SESSION['id_estados_gestionar']);
 }
+
+  $tieneAlertas = 0;
+
+            if($solicitudes_rechazadas){
+
+                    foreach($solicitudes_rechazadas as $row){
+
+                         $id = $row['id'];
+
+                          if(tieneAlerta($id)){
+
+                               $tieneAlertas = 1;
+                               break;
+
+                          }
+                    }
+
+            }
+
 ?>
+
+
+
 
 <div class="titulo_rendicion">
     <h4>RENDICIONES PROPIAS</h4>
@@ -34,8 +59,7 @@ if ($_SESSION['id_estados_gestionar'] == SOLICITUD_AUTORIZADA || $_SESSION['id_e
         </li>
 
    <?php
-   echo('<p style="display:none;">test'.$_SESSION['id_usuario'].'</p>');
-            if ( $_SESSION['id_usuario'] == ADMINISTRADOR_5 || $_SESSION['id_usuario'] == ADMINISTRADOR_1 || $_SESSION['id_usuario']== ADMINISTRADOR_2 || $_SESSION['id_usuario']== ADMINISTRADOR_3 || $_SESSION['id_usuario']== ADMINISTRADOR_4 || $_SESSION['id_usuario'] == ADMINISTRADOR_6 || $SESSION['id_usuario'] == ADMINISTRADOR_7 ){
+            if ($_SESSION['id_usuario'] == ADMINISTRADOR_6 || $_SESSION['id_usuario'] == ADMINISTRADOR_5 || $_SESSION['id_usuario'] == ADMINISTRADOR_1 || $_SESSION['id_usuario']== ADMINISTRADOR_2 || $_SESSION['id_usuario']== ADMINISTRADOR_3 || $_SESSION['id_usuario']== ADMINISTRADOR_4 || $_SESSION['id_usuario']== ADMINISTRADOR_7) {
                 ?><li class="botones_nueva" style="width:50px;margin-left:10px!important;border:none!important;margin-top:23.5px;"><a href='admin/exportar.php'> <input  style="width: 50px;" class="botones_nueva" type="button" value="Admin"/></a>
             </li> <?php } ?>
 
@@ -218,3 +242,95 @@ if ($_SESSION['id_estados_gestionar'] == SOLICITUD_AUTORIZADA || $_SESSION['id_e
     </ul>
 
 </div>
+
+
+
+
+<div style="display:none; padding: 9px 4px;height: auto !important;" id="alerta_solicitudes_rechazadas">
+
+        <ul>
+        <li style="list-style: none !important; margin-bottom: 11px;  font-size: 12px;">Tiene solicitudes rechazadas, por favor modifiquelas y vuelvalas a presentar</li>
+        <?php
+
+
+
+        if($solicitudes_rechazadas){
+
+
+
+           foreach($solicitudes_rechazadas as $row){
+
+                    $id = $row['id'];
+                    $fecha = $row['fecha_presentacion'];
+                    $mes = $row['mes'];
+
+
+                    $mes = obtener_nombre_mes($mes);
+                    $fecha = substr($fecha,0,10);
+
+
+                    if(tieneAlerta($id)){
+
+
+                          echo ('<li style="margin-bottom: 11px; font-size: 12px;">Solicitud n&uacute;mero <b>' .$id. " </b>presentada el d&iacute;a <b>" . $fecha . " </b>correspondiente al mes de <b>" . $mes . "</b></li>");
+
+                          $a = yaVioAlerta($id);
+
+
+                    }
+            }
+
+
+
+        }
+
+    ?>
+
+          </ul>
+</div>
+<script>
+
+
+    $(document).ready(function(){
+
+            var tieneAlertas = <?php echo $tieneAlertas; ?>;
+
+			//console.log(tieneAlertas);
+
+
+
+           var solicitudes_rechazadas = <?php echo count($solicitudes_rechazadas); ?>;
+
+           // console.log(solicitudes_rechazadas);
+
+
+
+            if(solicitudes_rechazadas != 0 && tieneAlertas == 1){
+
+
+
+ 		//	console.log("cartel rechazadas");
+
+
+                    $('#alerta_solicitudes_rechazadas').css('display','inline-block');
+
+                    $("#alerta_solicitudes_rechazadas").dialog({
+
+                                        resizable: false,
+                                        height: 150,
+                                        width: 450,
+                                        modal: true,
+                                        show: { effect: 'blind', duration: 400 },
+                                        hide: { effect: 'explode',duration: 1000 }
+
+                                });
+
+
+                       $('.ui-dialog-titlebar span:first-child').html('SOLICITUDES RECHAZADAS');
+
+            }
+
+    });
+
+
+    </script>

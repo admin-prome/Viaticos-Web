@@ -1,7 +1,7 @@
 <?php
 
 error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', 0); 
+ini_set('display_errors', 1); 
 
 // A class that provides authortization token for apps that need to access Azure Active Directory Graph Service.
 class AuthorizationHelperForAADGraphService
@@ -30,7 +30,7 @@ class AuthorizationHelperForAADGraphService
         $ch = curl_init();
         // set url 
         $stsUrl = 'https://login.windows.net/common/oauth2/token';
-        //curl_setopt($ch, CURLOPT_PROXY, '127.0.0.1:8888');
+        
         curl_setopt($ch, CURLOPT_URL, $stsUrl); 
         // Get the response back as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
@@ -44,7 +44,7 @@ class AuthorizationHelperForAADGraphService
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         // read the output from the post request
-        $output = curl_exec($ch);     
+        $output = curl_exec($ch);
         // close curl resource to free up system resources
         curl_close($ch); 
              

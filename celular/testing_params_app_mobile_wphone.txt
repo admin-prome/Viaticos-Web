@@ -1,0 +1,16 @@
+id_usuario: 387
+id_motivo_visita: 1
+transporte: 7
+costo_transporte: 23
+id_origen: 1
+coordenadas: -34.5973222685951,-58.3728707027825
+fechahora: 2015-07-28 17:21:19
+nro_solicitud: 3333
+monto: 23
+plazo: 45
+id_segmento: 1
+visita_exitosa: 1
+so_mobile: WPhone
+nro_version: 1.600
+
+

@@ -1,8 +1,22 @@
+<style>
+     .ayudas{color: #757475;
+font-size: 12px;
+font-family: neosansregular;}
+
+.historial{text-align: left;font-size: 12px!important;}
+#historial_comentarios ul {list-style: none;}
+.comentario_detalles{color: #757475;font-family: neosansregular;font-size: 12px;}
+
+    
+</style>
+
+
+
 <?php
-//require_once 'checkLogin.php';
-require_once 'inc/const.php';
-require_once 'inc/funciones/historial.php';
-require_once 'inc/funciones/all_functions.php';
+require_once 'inc/checkLogin.php';
+require_once 'admin/inc/const.php';
+require_once 'admin/inc/funciones/historial.php';
+require_once 'admin/inc/funciones/all_functions.php';
 
 $solicitud = $_GET['id_solicitud'];
 $id_usuario = $_SESSION['id_usuario'];
@@ -21,11 +35,13 @@ $comentarios = obtener_comentarios_solicitud($_GET['id_solicitud']);
     if ($comentarios) {
         ?><p class="ayudas" style="font-size: 16px;">Historial .</p>
         <div id="historial_comentarios">
-            <ul>
+            <ul style="background-color:none!important;">
                 <?php
             if ($comentarios) {
                 foreach ($comentarios as $row) {
+                    if($row["usuario"]){
                     $usuario = obtener_nombre_usuario_BASE_BANCO($row["usuario"]);
+                    }else{$usuario='-';}
                     ?>
                     <li style="border-left :5px solid #A72626;margin-top: 25px;">
                         <div style="margin-left: 15px;">

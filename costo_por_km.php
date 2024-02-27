@@ -5,8 +5,7 @@ require_once 'inc/const.php';
 require_once 'inc/header.php';
 
 // require_once 'inc/menu_administrador.php';
-require_once 'inc/funciones/all_functions_sin_admin.php';
-/*
+
 require_once 'inc/funciones/cargos.php';
 require_once 'inc/funciones/conceptos.php';
 require_once 'inc/funciones/estados.php';
@@ -25,7 +24,6 @@ require_once 'inc/funciones/sucursales.php';
 require_once 'inc/funciones/usuarios.php';
 require_once 'inc/funciones/viaticos.php';
 require_once 'inc/funciones/zonas.php';
-*/
 
 ?>
 

@@ -71,11 +71,10 @@ h2{
 }
 
 
-#footer p
-{
+#footer p {
 	margin: 0;
-	/*padding-top: 10px;*/
-	/*padding-bottom: 50px;*/
+	padding-top: 10px;
+	padding-bottom: 50px;
 	color: #333;
 	font: 10px Arial, sans-serif;
 }

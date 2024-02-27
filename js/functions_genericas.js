@@ -80,8 +80,6 @@ function extraerCoordenadasMapa(url_mapa)
     var partes_destino = url_mapa.split("map=");
     var coords = partes_destino[1].split(",");
 
-	alert(coords[0] , coords[1]);
-console.error(coords[0], coords[1]);
     return (coords[0] + ',' + coords[1]);
 
 }
@@ -191,14 +189,15 @@ function validarFormLogin()
 
 
 function calcular_recorrido(direccion_1, direccion_2, insert) {
-    console.log(direccion_1);
-    console.log(direccion_2);
-    console.log(insert);
+   // console.log(direccion_1);
+   // console.log(direccion_2);
+   // console.log(insert);
 
     var distancia;
     var platform = new H.service.Platform({
         'app_id': 'qKAtQHz1I3GtyBVt5JaB',
-        'app_code': '6q36NzKaEnOvk8PSEJEi-Q'
+        'app_code': '6q36NzKaEnOvk8PSEJEi-Q',
+        'useHTTPS': 'true'     
     });
 
     // Get the default map types from the Platform object:
@@ -506,7 +505,7 @@ function extraerCoordenadasSegunURLMapa(url)
  $.ajax({
  type: 'get',
  data: parameters,
- url: '//route.cit.api.here.com/routing/7.2/calculateroute.json',
+ url: 'https://route.cit.api.here.com/routing/7.2/calculateroute.json',
  success: function(response) {
  
  var distancia = Number(response.response.route[0].summary.distance);
@@ -534,15 +533,15 @@ function extraerCoordenadasSegunURLMapa(url)
  "waypoint0": coord1,
  "waypoint1": coord2,
  "mode": 'fastest;car',
- "app_id": 'm5De9X3nG499z4bZVYsB',
- "app_code": '3o0Ns1dHDxL1fgjNBxQ1lg',
+ "app_id": 'qKAtQHz1I3GtyBVt5JaB',
+ "app_code": '6q36NzKaEnOvk8PSEJEi-Q',
  "departure": "now"
  };
  
  $.ajax({
  type: 'get',
  data: parameters,
- url: '//route.cit.api.here.com/routing/7.2/calculateroute.json',
+ url: 'https://route.cit.api.here.com/routing/7.2/calculateroute.json',
  success: function(response) {
  
  var distancia = Number(response.response.route[0].summary.distance);
@@ -591,14 +590,6 @@ function campo_esta_vacio(valor)
 function validar_vacio(valor)
 {
     return (valor.trim() != '');
-}
-
-function validar_numero(valor)
-{
-    if (valor == '')
-        return false;
-
-    return !isNaN(valor);
 }
 
 function marcar_error(id_input)
@@ -666,4 +657,13 @@ function conocer_nombre_estado_por_id(id_estado)
             break;
 
     }
+}
+
+
+function validar_numero(valor)
+{
+    if (valor == '')
+        return false;
+
+    return !isNaN(valor);
 }
