@@ -22,9 +22,9 @@ require_once 'vendor/autoload.php';
 
 
 // init configuration
-$clientID = '706852269376-j5vasego3ogg24gv6repqvnum3k77ce7.apps.googleusercontent.com';
-$clientSecret = 'SwHqGumBifXPe_10GXF_4glk';
-$redirectUri = 'http://rendicion.provinciamicroempresas.com/Google/checkLogin.php';
+$clientID = '100272080555-bdpc06f3n6tffv5k1bb7c6rq3e6lpv3h.apps.googleusercontent.com';
+$clientSecret = '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';
+$redirectUri = 'http://tst-rendicion.provinciamicroempresas.com/Google/checkLogin.php';
   
 // create Client Request to access Google API
 $client = new Google_Client();
@@ -87,7 +87,7 @@ function  redireccionar_login($email){
 			.botones
 			{
                 cursor: pointer;
-                margin-: 2%;
+                margin: 2%;
                 background: #6a6869;
                 background-image: -webkit-linear-gradient(top, #6a6869, #0b090a);
                 background-image: -moz-linear-gradient(top, #6a6869, #0b090a);

@@ -369,48 +369,89 @@ function calcular_distancia_viaje_celu(coord1,coord2,costo_x_km,ida_vuelta)
 
 
 // Esta funcion (calcular_distancia_viaje) NO se tocaaaa:
-function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta)
-{
-    parameters =
-            {
-                "waypoint0": coord1,
-                "waypoint1": coord2,
-                "mode": 'fastest;car',
-                "app_id": 'qKAtQHz1I3GtyBVt5JaB',
-                "app_code": '6q36NzKaEnOvk8PSEJEi-Q',
-                "departure": "now"
-            };
+// function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta)
+// {
+//     parameters =
+//             {
+//                 "waypoint0": coord1,
+//                 "waypoint1": coord2,
+//                 "mode": 'fastest;car',
+//                 "app_id": 'qKAtQHz1I3GtyBVt5JaB',
+//                 "app_code": '6q36NzKaEnOvk8PSEJEi-Q',
+//                 "departure": "now"
+//             };
+
+//     $.ajax({
+       
+// 	    type: 'get',
+//         data: parameters,
+//         url: 'https://route.cit.api.here.com/routing/7.2/calculateroute.json',
+//         success: function(response) {
+
+//             var distancia = Number(response.response.route[0].summary.distance);
+//            // alert(distancia);
+//             var km = Number((Number(distancia) / 1000).toFixed(2));
+//             var valor_costo = Number((km * Number(costo_x_km)).toFixed(2));
+
+//             if(ida_vuelta == 'ida')
+//             {
+//                 datos_viaje_ida[0] = km;
+//                 datos_viaje_ida[1] = valor_costo;
+//             }
+//             else // vuelta
+//             {
+//                 datos_viaje_vuelta[0] = km;
+//                 datos_viaje_vuelta[1] = valor_costo;
+//             }
+
+//         }
+
+//     });
+
+// }
+
+// Fin NO se toca.
+
+// FUNCION DE GOOGLE
+function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta) {
+    // Utilizando la API de Google Maps
+    var apiKey = 'AIzaSyBuY3ViUvLILdCPRfoZDAz8qdLBZOuOCZIY'; // Reemplaza 'TU_API_KEY' con tu clave de API de Google Maps
+
+    var url = 'https://maps.googleapis.com/maps/api/directions/json';
+    var origin = coord1;
+    var destination = coord2;
+    var mode = 'driving';
+
+    var parameters = {
+        'origin': origin,
+        'destination': destination,
+        'mode': mode,
+        'key': apiKey
+    };
 
     $.ajax({
-       
-	    type: 'get',
+        type: 'GET',
         data: parameters,
-        url: 'https://route.cit.api.here.com/routing/7.2/calculateroute.json',
+        url: url,
         success: function(response) {
-
-            var distancia = Number(response.response.route[0].summary.distance);
-           // alert(distancia);
+            var distancia = response.routes[0].legs[0].distance.value;
             var km = Number((Number(distancia) / 1000).toFixed(2));
             var valor_costo = Number((km * Number(costo_x_km)).toFixed(2));
 
-            if(ida_vuelta == 'ida')
-            {
+            if (ida_vuelta === 'ida') {
                 datos_viaje_ida[0] = km;
                 datos_viaje_ida[1] = valor_costo;
-            }
-            else // vuelta
-            {
+            } else {
                 datos_viaje_vuelta[0] = km;
                 datos_viaje_vuelta[1] = valor_costo;
             }
-
+        },
+        error: function(error) {
+            console.error('Error al calcular la ruta:', error);
+            // Manejar el error según tus necesidades
         }
-
     });
-
 }
-
-// Fin NO se toca.
 
 function buscar_distancia_costo()
 {

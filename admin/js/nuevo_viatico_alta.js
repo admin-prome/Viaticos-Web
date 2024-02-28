@@ -118,9 +118,9 @@ $("#boton_guardado_form_1,#boton_guardado_form_2,#boton_guardado_form_3").click(
                 marcar_error('form1_solicitud_viatico');
             }
 
-
+//Debemos cambiar esta funcion 
 // Validar destino:
-            if (validar_vacio(url_here) != false && validar_url(url_here) != false && url_here.slice(0, 20) == "https://www.here.com") {
+            if (validar_vacio(url_here) != false && validar_url(url_here) != false && url_here.slice(0, 20) == "https://www.google.com/maps") {
                 params.destino = extraerCoordenadasMapa($("#form1_destino_viatico").val());
             }
             else
@@ -156,7 +156,7 @@ $("#boton_guardado_form_1,#boton_guardado_form_2,#boton_guardado_form_3").click(
             }
 
 // Validar destino:
-            if (validar_vacio(url_here) != false && validar_url(url_here) != false && url_here.slice(0, 20) == "https://www.here.com")
+            if (validar_vacio(url_here) != false && validar_url(url_here) != false && url_here.slice(0, 20) == "https://www.google.com/maps")
                 params.destino = extraerCoordenadasMapa($("#form2_destino_viatico").val());
             else
             {

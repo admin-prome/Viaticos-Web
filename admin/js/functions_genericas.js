@@ -73,16 +73,33 @@ function valuesChecksTildados(clase)
 	return values;
 	
 }
+// FUNCION DE HERE
+// function extraerCoordenadasMapa(url_mapa)
+// {
 
-function extraerCoordenadasMapa(url_mapa)
-{
+//     var partes_destino = url_mapa.split("map=");
+//     var coords = partes_destino[1].split(",");
 
-    var partes_destino = url_mapa.split("map=");
-    var coords = partes_destino[1].split(",");
+//     return (coords[0] + ',' + coords[1]);
 
-    return (coords[0] + ',' + coords[1]);
+// }
+//FUNCION DE GOOGLE MAPS
+function extraerCoordenadasMapa(url_mapa) {
+    // Buscar el patrón de coordenadas en la URL
+    var match = url_mapa.match(/@(-?\d+\.\d+),(-?\d+\.\d+),/);
 
+    if (match) {
+        // Las coordenadas se encuentran en los grupos de captura
+        var latitud = match[1];
+        var longitud = match[2];
+        return latitud + ',' + longitud;
+    } else {
+        // Manejar el caso en el que la URL no tiene el formato esperado
+        console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
+        return null;
+    }
 }
+
 function validar_url(s) {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
     return regexp.test(s);
@@ -196,7 +213,7 @@ function calcular_recorrido(direccion_1, direccion_2, insert) {
     var distancia;
     var platform = new H.service.Platform({
         'app_id': 'qKAtQHz1I3GtyBVt5JaB',
-        'app_code': '6q36NzKaEnOvk8PSEJEi-Q'
+        'app_code': '6q36NzKaEnOvk8PSEJEi-Q',
         useCIT: true,
         useHTTPS: true
     });
@@ -474,17 +491,36 @@ function validarFormLogin()
  
  
  }*/
+// FUNCION DE HERE
+// function extraerCoordenadasSegunURLMapa(url)
+// {
+//     var partesURL = url.split(':');
+//     var coords = new Array();
 
-function extraerCoordenadasSegunURLMapa(url)
-{
-    var partesURL = url.split(':');
-    var coords = new Array();
+//     var punto1 = partesURL[2].split('/');
+//     coords[0] = punto1[0];
 
-    var punto1 = partesURL[2].split('/');
-    coords[0] = punto1[0];
+//     var punto2 = partesURL[3].split('?');
+//     coords[1] = punto2[0];
 
-    var punto2 = partesURL[3].split('?');
-    coords[1] = punto2[0];
+//     return coords;
+// }
+
+// NUEVA FUNCION DE GOOGLE MAPS
+function extraerCoordenadasSegunURLMapa(url) {
+    var coords = [];
+
+    // Buscar el patrón de coordenadas en la URL
+    var match = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+),/);
+
+    if (match) {
+        // Las coordenadas se encuentran en los grupos de captura
+        coords[0] = match[1]; // Latitud
+        coords[1] = match[2]; // Longitud
+    } else {
+        // Manejar el caso en el que la URL no tiene el formato esperado
+        console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
+    }
 
     return coords;
 }
@@ -565,7 +601,7 @@ function extraerCoordenadasSegunURLMapa(url)
 function obtenerCoordenadasDestinoVisitaAnterior()
 {
 
-    var parametros = {"formulario": "0"}
+    var parametros = {"formulario": "0"};
 
     if (solicitud_nueva == 1)
     {
@@ -596,7 +632,9 @@ function validar_vacio(valor)
 function validar_numero(valor)
 {
     if (valor == '')
-        return false;
+    {       
+        return false
+    }
 
     return !isNaN(valor);
 }

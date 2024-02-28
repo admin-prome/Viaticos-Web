@@ -473,17 +473,36 @@ function validarFormLogin()
  
  
  }*/
+// FUNCION DE HERE
+// function extraerCoordenadasSegunURLMapa(url)
+// {
+//     var partesURL = url.split(':');
+//     var coords = new Array();
 
-function extraerCoordenadasSegunURLMapa(url)
-{
-    var partesURL = url.split(':');
-    var coords = new Array();
+//     var punto1 = partesURL[2].split('/');
+//     coords[0] = punto1[0];
 
-    var punto1 = partesURL[2].split('/');
-    coords[0] = punto1[0];
+//     var punto2 = partesURL[3].split('?');
+//     coords[1] = punto2[0];
 
-    var punto2 = partesURL[3].split('?');
-    coords[1] = punto2[0];
+//     return coords;
+// }
+
+// NUEVA FUNCION DE GOOGLE MAPS
+function extraerCoordenadasSegunURLMapa(url) {
+    var coords = [];
+
+    // Buscar el patrón de coordenadas en la URL
+    var match = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+),/);
+
+    if (match) {
+        // Las coordenadas se encuentran en los grupos de captura
+        coords[0] = match[1]; // Latitud
+        coords[1] = match[2]; // Longitud
+    } else {
+        // Manejar el caso en el que la URL no tiene el formato esperado
+        console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
+    }
 
     return coords;
 }

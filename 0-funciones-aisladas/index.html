@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcular Distancia con Google Maps</title>
+    <!-- Agrega jQuery si aún no está cargado -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+</head>
+<body>
+
+    <form id="coordForm">
+        <label for="urlInput">URL de Google Maps:</label>
+        <input type="text" id="urlInput" required>
+        <button type="button" onclick="procesarURL()">Calcular Distancia (HERE)</button>
+        <button type="button" onclick="calcularDistanciaGoogle()">Calcular Distancia (Google)</button>
+    </form>
+
+    <div id="coordenadas"></div>
+    <div id="resultado"></div>
+
+    <script>
+        // Declarar la función calcular_distancia_viaje en el ámbito global
+        function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta) {
+            // ... código de la función ...
+        }
+
+        function extraerCoordenadasSegunURLMapa(url) {
+            var coords = [];
+            var match = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+),/);
+
+            if (match) {
+                coords[0] = match[1]; // Latitud
+                coords[1] = match[2]; // Longitud
+            } else {
+                console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
+            }
+
+            return coords;
+        }
+
+        function extraerCoordenadasMapa(url_mapa) {
+            var match = url_mapa.match(/@(-?\d+\.\d+),(-?\d+\.\d+),/);
+
+            if (match) {
+                var latitud = match[1];
+                var longitud = match[2];
+                return latitud + ',' + longitud;
+            } else {
+                console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
+                return null;
+            }
+        }
+
+        function mostrarCoordenadas(latitud, longitud) {
+            var resultado = "Coordenadas: Latitud " + latitud + ", Longitud " + longitud;
+            document.getElementById("coordenadas").innerHTML = resultado;
+        }
+
+        function procesarURL() {
+            var url = document.getElementById("urlInput").value;
+            var coordenadas = extraerCoordenadasSegunURLMapa(url);
+
+            if (coordenadas.length === 2) {
+                mostrarCoordenadas(coordenadas[0], coordenadas[1]);
+            }
+        }
+
+        function extraerCoordenadasHardcodeadas() {
+            // Ejemplo: Coordenada hardcodeada
+            return "37.7749,-122.4194";
+        }
+
+        function calcularDistanciaGoogle() {
+            var coord1 = extraerCoordenadasHardcodeadas(); // Coordenada hardcodeada
+            var coord2 = extraerCoordenadasMapa(document.getElementById("urlInput").value); // Coordenada desde el input
+
+            var costo_x_km = 0.10; // Ejemplo de costo por kilómetro
+            var ida_vuelta = 'ida'; // Puedes cambiar esto según tus necesidades
+
+            console.log("Coordenada 1:", coord1);
+            console.log("Coordenada 2:", coord2);
+
+            var apiKey = 'AIzaSyBuY3ViUvLILdCPRfoZDAz8qdLBZOuOCZI'; // Reemplaza 'TU_API_KEY' con tu clave de API de Google Maps
+
+            var url = 'https://maps.googleapis.com/maps/api/directions/json';
+            var origin = coord1;
+            var destination = coord2;
+            var mode = 'driving';
+
+            var parameters = {
+                'origin': origin,
+                'destination': destination,
+                'mode': mode,
+                'key': apiKey
+            };
+
+            $.ajax({
+                type: 'GET',
+                data: parameters,
+                url: url,
+                success: function(response) {
+                    console.log("Respuesta de Google Maps API:", response);
+                    var distancia = response.routes[0].legs[0].distance.value;
+                    var km = Number((Number(distancia) / 1000).toFixed(2));
+                    var valor_costo = Number((km * Number(costo_x_km)).toFixed(2));
+
+                    if (ida_vuelta === 'ida') {
+                        datos_viaje_ida[0] = km;
+                        datos_viaje_ida[1] = valor_costo;
+                    } else {
+                        datos_viaje_vuelta[0] = km;
+                        datos_viaje_vuelta[1] = valor_costo;
+                    }
+
+                    mostrarResultados();
+                },
+                error: function(error) {
+                    console.error('Error al calcular la ruta:', error);
+                    // Manejar el error según tus necesidades
+                }
+            });
+        }
+
+        function mostrarResultados() {
+            var resultadoHTML = "<p>Resultado del cálculo:</p>";
+            resultadoHTML += "<p>Ida: Distancia " + datos_viaje_ida[0] + " km, Costo $" + datos_viaje_ida[1] + "</p>";
+            resultadoHTML += "<p>Vuelta: Distancia " + datos_viaje_vuelta[0] + " km, Costo $" + datos_viaje_vuelta[1] + "</p>";
+
+            document.getElementById("resultado").innerHTML = resultadoHTML;
+        }
+    </script>
+
+</body>
+</html>
+
