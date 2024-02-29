@@ -397,14 +397,9 @@ function calcular_distancia_viaje_celu(coord1, coord2, costo_x_km, ida_vuelta) {
 
 // FUNCION DE GOOGLE
 function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta) {
-	// Utilizando la API de Google Maps
 
-	console.log("caluclar_distancia_viaje", coord1, coord1);
-	var apiKey = 'AIzaSyBuY3ViUvLILdCPRfoZDAz8qdLBZOuOCZI'; // Reemplaza 'TU_API_KEY' con tu clave de API de Google Maps
-
+	var apiKey = 'AIzaSyBuY3ViUvLILdCPRfoZDAz8qdLBZOuOCZI';
 	var url = 'https://maps.googleapis.com/maps/api/directions/json';
-	// var origin = coord1;
-	// var destination = coord2;
 	var mode = 'driving';
 
 	var coord1Array = coord1.split(',');
@@ -413,13 +408,6 @@ function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta) {
 	var origin = new google.maps.LatLng(parseFloat(coord1Array[0]), parseFloat(coord1Array[1]));
 	var destination = new google.maps.LatLng(parseFloat(coord2Array[0]), parseFloat(coord2Array[1]));
 
-
-	// var parameters = {
-	// 	'origin': origin,
-	// 	'destination': destination,
-	// 	'mode': mode,
-	// 	'key': apiKey
-	// };
 
 	var request = {
 		origins: [origin],
@@ -433,8 +421,8 @@ function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta) {
 	service.getDistanceMatrix(request, function (response, status) {
 		if (status === google.maps.DistanceMatrixStatus.OK) {
 			var distance = response.rows[0].elements[0].distance.value;
-			console.log("Distancia en auto:", distance, "metros");
-			console.log("Distancia en auto:", distance / 1000, "kilómetros");
+			//console.log("Distancia en auto:", distance, "metros");
+			//console.log("Distancia en auto:", distance / 1000, "kilómetros");
 
 			var km = Number((Number(distance) / 1000).toFixed(2));
 			var valor_costo = Number((km * Number(costo_x_km)).toFixed(2));
@@ -450,32 +438,6 @@ function calcular_distancia_viaje(coord1, coord2, costo_x_km, ida_vuelta) {
 			console.error("Error al calcular la distancia:", status);
 		}
 	});
-
-
-	// $.ajax({
-	// 	type: 'GET',
-	// 	data: parameters,
-	// 	url: url,
-	// 	success: function (response) {
-	// 		var distancia = response.routes[0].legs[0].distance.value;
-	// 		var km = Number((Number(distancia) / 1000).toFixed(2));
-	// 		var valor_costo = Number((km * Number(costo_x_km)).toFixed(2));
-
-	// 		if (ida_vuelta === 'ida') {
-	// 			datos_viaje_ida[0] = km;
-	// 			datos_viaje_ida[1] = valor_costo;
-	// 		} else {
-	// 			datos_viaje_vuelta[0] = km;
-	// 			datos_viaje_vuelta[1] = valor_costo;
-	// 		}
-	// 	},
-	// 	error: function (error) {
-	// 		console.dir(error);
-	// 		console.error('Error al calcular la ruta. Estado:', error.status, 'Mensaje:', error.statusText);
-	// 		console.error(error.error);
-	// 	}
-
-	// });
 }
 
 function buscar_distancia_costo() {

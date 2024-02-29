@@ -85,7 +85,6 @@ function valuesChecksTildados(clase)
 // }
 //FUNCION DE GOOGLE MAPS
 function extraerCoordenadasMapa(url_mapa) {
-    console.log("extraer coordenadas");
     // Buscar el patrón de coordenadas en la URL
     var match = url_mapa.match(/@(-?\d+\.\d+),(-?\d+\.\d+),/);
 
@@ -96,7 +95,6 @@ function extraerCoordenadasMapa(url_mapa) {
         return latitud + ',' + longitud;
     } else {
         // Manejar el caso en el que la URL no tiene el formato esperado
-        console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
         return null;
     }
 }
@@ -206,123 +204,170 @@ function validarFormLogin()
 
 
 function calcular_recorrido(direccion_1, direccion_2, insert) {
-   // console.log(direccion_1);
-   // console.log(direccion_2);
-   // console.log(insert);
 
-    var distancia;
-    var platform = new H.service.Platform({
-        'app_id': 'qKAtQHz1I3GtyBVt5JaB',
-        'app_code': '6q36NzKaEnOvk8PSEJEi-Q',
-        'useHTTPS': 'true'     
+
+    // Encode coordinates with format information
+
+    
+    const lat1 = parseFloat(direccion_1.split(',')[0]);
+    const lng1 = parseFloat(direccion_1.split(',')[1]);
+    const lat2 = parseFloat(direccion_2.split(',')[0]);
+    const lng2 = parseFloat(direccion_2.split(',')[1]);
+    
+    const apiKey = 'AIzaSyBuY3ViUvLILdCPRfoZDAz8qdLBZOuOCZI';
+    const mapElement = document.getElementById(insert);
+    const map = new google.maps.Map(mapElement, {
+      zoom: 10,
+      center: { lat: lat1, lng: lng1 }, // Default center
     });
+    
 
-    // Get the default map types from the Platform object:
-    var defaultLayers = platform.createDefaultLayers();
+    function createMarker(position, label, color) {
+        const marker = new google.maps.Marker({
+          position,
+          map,
+          label,
+          icon: {
+            url: `https://maps.gstatic.com/mapfiles/api-3/icons/driving_man_${color}.png`,
+            scaledSize: new google.maps.Size(40, 40),
+          },
+        });
+        return marker;
+      }
 
-    // Instantiate the map:
-    var map = new H.Map(
-            document.getElementById(insert),
-            defaultLayers.normal.map,
-            {
-                zoom: 10,
-                center: {lng: 13.4, lat: 52.51}
-            });
+    // Create request with formatted coordinates
+    const directionsRequest = {
+        origin: new google.maps.LatLng(lat1, lng1),
+        destination: new google.maps.LatLng(lat2, lng2),
+        travelMode: google.maps.TravelMode.DRIVING,
+      };
 
-    // Create the default UI:
-    var ui = H.ui.UI.createDefault(map, defaultLayers, 'es-ES');
-    var mapSettings = ui.getControl('mapsettings');
-    var zoom = ui.getControl('zoom');
-    var scalebar = ui.getControl('scalebar');
+    
+     // Get directions and display them on the map
+    const directionsService = new google.maps.DirectionsService();
+    directionsService.route(directionsRequest, (response, status) => {
+    if (status === google.maps.DirectionsStatus.OK) {
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+        map,
+        directions: response,
+        });
 
-
-
-    mapSettings.setAlignment('bottom-right');
-    zoom.setAlignment('bottom-right');
-    scalebar.setAlignment('bottom-right');
-    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-
-//                    console.log(map);
-    // Create the parameters for the routing request:
-    var routingParameters = {
-        // The routing mode:
-        'mode': 'fastest;car',
-        // The start point of the route:
-        'waypoint0': 'geo!' + direccion_1 + '',
-        // The end point of the route:
-        'waypoint1': 'geo!' + direccion_2 + '',
-        // To retrieve the shape of the route we choose the route
-        // representation mode 'display'
-        'representation': 'display',
-    };
-    // console.log(H.math.Rect);
-    // Define a callback function to process the routing response:
-    var onResult = function(result) {
-
-        var route,
-                routeShape,
-                startPoint,
-                endPoint,
-                strip;
-        if (result.response.route) {
-            // Pick the first route from the response:
-            route = result.response.route[0];
-            // Pick the route's shape:
-            routeShape = route.shape;
-
-            // Create a strip to use as a point source for the route line
-            strip = new H.geo.Strip();
-            // Push all the points in the shape into the strip:
-            routeShape.forEach(function(point) {
-                var parts = point.split(',');
-                strip.pushLatLngAlt(parts[0], parts[1]);
-            });
-
-            // Retrieve the mapped positions of the requested waypoints:
-            startPoint = route.waypoint[0].mappedPosition;
-            endPoint = route.waypoint[1].mappedPosition;
-
-            // Create a polyline to display the route:
-             var routeLine = new H.map.Polyline(strip, {
-            style: { lineWidth: 10 },
-            arrows: { fillColor: 'white', frequency: 2, width: 0.8, length: 0.7 }
-          });
-
-            // Create a marker for the start point:
-            var startMarker = new H.map.Marker({
-                lat: startPoint.latitude,
-                lng: startPoint.longitude,
-                nme:'x'
-            });
-
-            // Create a marker for the end point:
-            var endMarker = new H.map.Marker({
-                lat: endPoint.latitude,
-                lng: endPoint.longitude
-            });
-
-            // Add the route polyline and the two markers to the map:
-            map.addObjects([routeLine, startMarker, endMarker]);
-
-            // Set the map's viewport to make the whole route visible:
-            map.setViewBounds(routeLine.getBounds());
-            // console.log (map.setViewBounds(routeLine.getBounds()));
-        }
-    };
-
-    // Get an instance of the routing service:
-    var router = platform.getRoutingService();
-
-    // Call calculateRoute() with the routing parameters,
-    // the callback and an error callback function (called if a
-    // communication error occurs):
-    router.calculateRoute(routingParameters, onResult,
-            function(error) {
-                alert(error.message);
-            });
-
-
+        // Optional: Adjust map center to fit the route
+        map.fitBounds(response.routes[0].bounds);
+    } else {
+        console.error("Error:", status);
+    }
+    });
 }
+
+    // var platform = new H.service.Platform({
+    //     'app_id': 'qKAtQHz1I3GtyBVt5JaB',
+    //     'app_code': '6q36NzKaEnOvk8PSEJEi-Q',
+    //     'useHTTPS': 'true'     
+    // });
+
+    // // Get the default map types from the Platform object:
+    // var defaultLayers = platform.createDefaultLayers();
+
+    // // Instantiate the map:
+    // var map = new H.Map(
+    //         document.getElementById(insert),
+    //         defaultLayers.normal.map,
+    //         {
+    //             zoom: 10,
+    //             center: {lng: 13.4, lat: 52.51}
+    //         });
+
+    // // Create the default UI:
+    // var ui = H.ui.UI.createDefault(map, defaultLayers, 'es-ES');
+    // var mapSettings = ui.getControl('mapsettings');
+    // var zoom = ui.getControl('zoom');
+    // var scalebar = ui.getControl('scalebar');
+
+
+
+    // mapSettings.setAlignment('bottom-right');
+    // zoom.setAlignment('bottom-right');
+    // scalebar.setAlignment('bottom-right');
+    // var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+    // // Create the parameters for the routing request:
+    // var routingParameters = {
+    //     // The routing mode:
+    //     'mode': 'fastest;car',
+    //     // The start point of the route:
+    //     'waypoint0': 'geo!' + direccion_1 + '',
+    //     // The end point of the route:
+    //     'waypoint1': 'geo!' + direccion_2 + '',
+    //     // To retrieve the shape of the route we choose the route
+    //     // representation mode 'display'
+    //     'representation': 'display',
+    // };
+    // // Define a callback function to process the routing response:
+    // var onResult = function(result) {
+
+    //     var route,
+    //             routeShape,
+    //             startPoint,
+    //             endPoint,
+    //             strip;
+    //     if (result.response.route) {
+    //         // Pick the first route from the response:
+    //         route = result.response.route[0];
+    //         // Pick the route's shape:
+    //         routeShape = route.shape;
+
+    //         // Create a strip to use as a point source for the route line
+    //         strip = new H.geo.Strip();
+    //         // Push all the points in the shape into the strip:
+    //         routeShape.forEach(function(point) {
+    //             var parts = point.split(',');
+    //             strip.pushLatLngAlt(parts[0], parts[1]);
+    //         });
+
+    //         // Retrieve the mapped positions of the requested waypoints:
+    //         startPoint = route.waypoint[0].mappedPosition;
+    //         endPoint = route.waypoint[1].mappedPosition;
+
+    //         // Create a polyline to display the route:
+    //          var routeLine = new H.map.Polyline(strip, {
+    //         style: { lineWidth: 10 },
+    //         arrows: { fillColor: 'white', frequency: 2, width: 0.8, length: 0.7 }
+    //       });
+
+    //         // Create a marker for the start point:
+    //         var startMarker = new H.map.Marker({
+    //             lat: startPoint.latitude,
+    //             lng: startPoint.longitude,
+    //             nme:'x'
+    //         });
+
+    //         // Create a marker for the end point:
+    //         var endMarker = new H.map.Marker({
+    //             lat: endPoint.latitude,
+    //             lng: endPoint.longitude
+    //         });
+
+    //         // Add the route polyline and the two markers to the map:
+    //         map.addObjects([routeLine, startMarker, endMarker]);
+
+    //         // Set the map's viewport to make the whole route visible:
+    //         map.setViewBounds(routeLine.getBounds());
+    //     }
+    // };
+
+    // // Get an instance of the routing service:
+    // var router = platform.getRoutingService();
+
+    // // Call calculateRoute() with the routing parameters,
+    // // the callback and an error callback function (called if a
+    // // communication error occurs):
+    // router.calculateRoute(routingParameters, onResult,
+    //         function(error) {
+    //             alert(error.message);
+    //         });
+
+
+//}
 
 function estaEnArray(valor, miarray)
 {
@@ -507,7 +552,6 @@ function validarFormLogin()
 
 // NUEVA FUNCION DE GOOGLE MAPS
 function extraerCoordenadasSegunURLMapa(url) {
-    console.log("extraerCoordenadasSegunURLMapa");
     var coords = [];
 
     // Buscar el patrón de coordenadas en la URL
@@ -519,7 +563,7 @@ function extraerCoordenadasSegunURLMapa(url) {
         coords[1] = match[2]; // Longitud
     } else {
         // Manejar el caso en el que la URL no tiene el formato esperado
-        console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
+        //console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
     }
 
     return coords;
