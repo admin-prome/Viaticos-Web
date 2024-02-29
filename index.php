@@ -6,8 +6,8 @@ if(isset($_SESSION['autentificado']))
 {
     header('Location: home.php');
 }else{
-    header('Location: Google\checkLogin.php');
-
+    // header('Location: Google\checkLogin.php'); 
+    header('location: microsoft\Authorize.php');
 }
 ?>
 
@@ -24,7 +24,7 @@ if(isset($_SESSION['autentificado']))
 			.botones
 			{
                 cursor: pointer;
-                margin-: 2%;
+                margin: 2%;
                 background: #6a6869;
                 background-image: -webkit-linear-gradient(top, #6a6869, #0b090a);
                 background-image: -moz-linear-gradient(top, #6a6869, #0b090a);
@@ -106,8 +106,8 @@ if(isset($_SESSION['autentificado']))
 
         function loginMicrosoft()  
 	    {
-		    //var _url = "/microsoft/Authorize.php";
-		    var _url = "./google/checkLogin.php";
+		    var _url = "/microsoft/Authorize.php";
+		    //var _url = "./google/checkLogin.php";
     		window.location.href = _url;       
 		   		   
             $('#error_user_login').html('');
