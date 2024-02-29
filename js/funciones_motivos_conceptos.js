@@ -26,7 +26,18 @@ function agregarItemsConceptos(id_motivo,id_selector_concepto)
 		$('#' + id_selector_concepto).append($('<option>',
 		{	value: 2,	text: 'Estacionamiento'	}));
 		
-		return true;	
+		$('#' + id_selector_concepto).append($('<option>',
+		{	value: 12,	text: 'Beneficio Fit'	}));
+
+                $('#' + id_selector_concepto).append($('<option>',
+                {       value: 13,      text: 'Beneficio Prepaga'   }));
+	        
+                 $('#' + id_selector_concepto).append($('<option>',
+                {       value: 14,      text: 'Reposicion Caja Chica'   }));	
+
+                 $('#' + id_selector_concepto).append($('<option>',
+                {       value: 20,      text: 'Reintegro de guardería D144/2022'   }));
+               return true;	
 	
 	}
 	
@@ -59,7 +70,25 @@ function agregarItemsConceptos(id_motivo,id_selector_concepto)
 		{	value: 3,	text: 'Almuerzo'	}));
 	
 		$('#' + id_selector_concepto).append($('<option>',
-		{	value: 1,	text: 'Cena'	}));	
+		{	value: 1,	text: 'Cena'	}));
+
+		$('#' + id_selector_concepto).append($('<option>',
+                {       value: 15,      text: 'Formacion' }));
 	}
+		
+		if(id_motivo == 5) // Otros Gastos
+        {
+                $('#' + id_selector_concepto).append($('<option>',
+                {       value: 16,      text: 'Gastos de libreria Red'     }));
+
+                $('#' + id_selector_concepto).append($('<option>',
+                {       value: 17,      text: 'Gastos de infusiones Red'        }));
+
+                $('#' + id_selector_concepto).append($('<option>',
+                {       value: 18,      text: 'Otros Gastos No listados'    }));
+
+                $('#' + id_selector_concepto).append($('<option>',
+                {       value: 19,      text: 'Reuniones de area' }));
+        }
 	
 }

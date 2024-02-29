@@ -1,19 +1,10 @@
 <?php
-//require_once 'inc/checkLogin.php';
-require_once 'inc/const.php';
-
 require 'inc/header.php';
 require 'inc/menu_administrador.php';
-
-require_once 'inc/funciones/all_functions_sin_admin.php';
-
-
-/*
 require 'inc/funciones/sucursales.php';
 require 'inc/funciones/usuarios.php';
 require 'inc/funciones/cargos.php';
 require 'inc/funciones/perfiles_viaticos.php';
-*/
 
 $usuarios = obtener_usuarios();
 $sucursales = obtener_sucursales();

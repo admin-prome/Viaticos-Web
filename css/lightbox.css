@@ -79,7 +79,7 @@ body:after {
   width: 32px;
   height: 32px;
   margin: 0 auto;
-  background: url(../img/loading.gif) no-repeat;
+ background: url(../img/loading.gif) no-repeat;
 }
 
 .lb-nav {
@@ -129,7 +129,7 @@ body:after {
   right: 0;
   float: right;
   background: url(../img/next.png) right 48% no-repeat;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
   -webkit-transition: opacity 0.6s;
   -moz-transition: opacity 0.6s;

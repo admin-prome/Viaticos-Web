@@ -1,0 +1,37 @@
+<?php
+
+require '../admin/inc/const.php';
+require '../admin/inc/funciones/querys_mysql.php';
+
+// Recibo el id de personal, y devuelvo el ID de Ejecutivo.
+if(empty($_POST['id_personal']))
+{
+	echo (-1);
+	die();
+}
+
+$query_pg 	= "SELECT dni FROM personal WHERE personalid = ".$_POST['id_personal']." AND activo = true";
+
+$rs_pg = ejecutarConsultaPostgre($query_pg);
+
+if(!empty($rs_pg)) 
+{
+	$dni = (int) $rs_pg[0]['dni'];
+	
+	$query_mysql = "SELECT id FROM ids_ejecutivos WHERE dni = ".$dni;
+	$rs_mysql 	 = ejecutarConsulta($query_mysql);
+	
+	if(!empty($rs_mysql)) 
+	{
+		$id_ejecutivo = $rs_mysql[0]['id'];
+		echo $id_ejecutivo;
+	}
+	else
+	{
+		echo "0";
+	}
+}
+else
+{
+	echo "-1";
+}

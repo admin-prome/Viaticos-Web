@@ -24,7 +24,7 @@
             curl_setopt($ch, CURLOPT_URL, $feedURL);             
             
             //Enable fiddler to capture request
-            //curl_setopt($ch, CURLOPT_PROXY, '127.0.0.1:8888');
+            
             // $output contains the output string 
 			//echo "<br><br>CURLOPT_URL: ".CURLOPT_URL;
 

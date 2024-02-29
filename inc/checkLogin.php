@@ -3,5 +3,5 @@ session_start();
 
 if(!isset($_SESSION['autentificado']))
 {
-    header('Location: ../index.php');	
+    header('Location: index.php');	
 }

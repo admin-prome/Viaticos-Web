@@ -1,0 +1,16 @@
+transporte: 7
+id_origen: 1
+so_mobile: android
+nro_version: 1.6
+plazo: 233
+fechahora: 2015-07-28 10:51:04
+costo_transporte: 33
+id_motivo_visita: 1
+id_segmento: 1
+nro_solicitud: 233
+id_usuario: 387
+coordenadas: -34.5974339,-58.3731939
+visita_exitosa: 1
+monto: 233
+
+

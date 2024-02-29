@@ -30,21 +30,26 @@ session_start();
 	AuthorizationHelperForAADGraphService::GetAuthenticationHeaderFor3LeggedFlow($_GET['code']);
 	
 	$user = GraphServiceAccessHelper::getMeEntry();  
-	 
+
 	 $datos_consulta = obtener_usuarios_login_BASE_BANCO($user->{'mail'});
+$email=$user->{'mail'};
+$id_personal = $datos_consulta['personalid'];
 
     if (!$datos_consulta) 
 	{
         ?>
 		<script type="text/javascript">
 			alert('El usuario ingresado no pertenece a la base de datos del sistema.');
-			window.location.href = 'http://rendicion.provinciamicroempresas.com/index.php?fin=1#';
+			window.location.href = '/index.php?fin=1#';
 		</script>
 		<?php
     } 
 	else 
+
 	{
+var_dump ($email);
         iniciarSesion($datos_consulta);
-		header('Location: http://rendicion.provinciamicroempresas.com/home.php');
+		header('Location: /home.php?email='.$email.'&idpersonal='.$id_personal.'&idejecutivo='.obtenerIDEjecutivoSegunIDPersonal($id_personal).'&nombre='.obtenerNombreUsuarioSegunIDPersonal($id_personal));
     }
+	
 ?>
