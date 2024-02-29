@@ -74,14 +74,31 @@ function valuesChecksTildados(clase)
 	
 }
 
-function extraerCoordenadasMapa(url_mapa)
-{
+// function extraerCoordenadasMapa(url_mapa)
+// {
 
-    var partes_destino = url_mapa.split("map=");
-    var coords = partes_destino[1].split(",");
+//     var partes_destino = url_mapa.split("map=");
+//     var coords = partes_destino[1].split(",");
 
-    return (coords[0] + ',' + coords[1]);
+//     return (coords[0] + ',' + coords[1]);
 
+// }
+//FUNCION DE GOOGLE MAPS
+function extraerCoordenadasMapa(url_mapa) {
+    console.log("extraer coordenadas");
+    // Buscar el patrón de coordenadas en la URL
+    var match = url_mapa.match(/@(-?\d+\.\d+),(-?\d+\.\d+),/);
+
+    if (match) {
+        // Las coordenadas se encuentran en los grupos de captura
+        var latitud = match[1];
+        var longitud = match[2];
+        return latitud + ',' + longitud;
+    } else {
+        // Manejar el caso en el que la URL no tiene el formato esperado
+        console.error("URL de Google Maps no válida. Por favor, ingrese una URL válida.");
+        return null;
+    }
 }
 function validar_url(s) {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
@@ -490,6 +507,7 @@ function validarFormLogin()
 
 // NUEVA FUNCION DE GOOGLE MAPS
 function extraerCoordenadasSegunURLMapa(url) {
+    console.log("extraerCoordenadasSegunURLMapa");
     var coords = [];
 
     // Buscar el patrón de coordenadas en la URL
