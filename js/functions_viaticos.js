@@ -305,26 +305,75 @@ indiceIdas = 0;
 indiceVueltas = 0;
 
 function calcular_distancia_viaje_celu(coord1, coord2, costo_x_km, ida_vuelta) {
-	parameters =
-	{
-		"waypoint0": coord1,
-		"waypoint1": coord2,
-		"mode": 'fastest;car',
-		"app_id": 'qKAtQHz1I3GtyBVt5JaB',
-		"app_code": '6q36NzKaEnOvk8PSEJEi-Q',
-		"departure": "now"
+	// parameters =
+	// {
+	// 	"waypoint0": coord1,
+	// 	"waypoint1": coord2,
+	// 	"mode": 'fastest;car',
+	// 	"app_id": 'qKAtQHz1I3GtyBVt5JaB',
+	// 	"app_code": '6q36NzKaEnOvk8PSEJEi-Q',
+	// 	"departure": "now"
+	// };
+
+
+	// $.ajax({
+
+	// 	type: 'get',
+	// 	data: parameters,
+	// 	url: 'https://route.cit.api.here.com/routing/7.2/calculateroute.json',
+	// 	success: function (response) {
+
+	// 		var distancia = Number(response.response.route[0].summary.distance);
+	// 		var km = Number((Number(distancia) / 1000).toFixed(2));
+	// 		var valor_costo = Number((km * Number(costo_x_km)).toFixed(2));
+
+	// 		if (ida_vuelta == 'ida') {
+	// 			datos_viaje_ida[indiceIdas] = km;
+	// 			indiceIdas++;
+
+	// 			datos_viaje_ida[indiceIdas] = valor_costo;
+	// 			indiceIdas++;
+
+	// 		}
+	// 		else // vuelta
+	// 		{
+	// 			datos_viaje_vuelta[indiceVueltas] = km;
+	// 			indiceVueltas++;
+
+	// 			datos_viaje_vuelta[indiceVueltas] = valor_costo;
+	// 			indiceVueltas++;
+	// 		}
+
+	// 	}
+
+	// });
+
+
+	var apiKey = 'AIzaSyBuY3ViUvLILdCPRfoZDAz8qdLBZOuOCZI';
+	var url = 'https://maps.googleapis.com/maps/api/directions/json';
+	var mode = 'driving';
+
+	var coord1Array = coord1.split(',');
+	var coord2Array = coord2.split(',');
+
+	var origin = new google.maps.LatLng(parseFloat(coord1Array[0]), parseFloat(coord1Array[1]));
+	var destination = new google.maps.LatLng(parseFloat(coord2Array[0]), parseFloat(coord2Array[1]));
+
+
+	var request = {
+		origins: [origin],
+		destinations: [destination],
+		travelMode: google.maps.TravelMode.DRIVING,
+		unitSystem: google.maps.UnitSystem.METRIC,
 	};
 
+	var service = new google.maps.DistanceMatrixService();
 
-	$.ajax({
+	service.getDistanceMatrix(request, function (response, status) {
+		if (status === google.maps.DistanceMatrixStatus.OK) {
 
-		type: 'get',
-		data: parameters,
-		url: 'https://route.cit.api.here.com/routing/7.2/calculateroute.json',
-		success: function (response) {
-
-			var distancia = Number(response.response.route[0].summary.distance);
-			var km = Number((Number(distancia) / 1000).toFixed(2));
+			var distance = response.rows[0].elements[0].distance.value;
+			var km = Number((Number(distance) / 1000).toFixed(2));
 			var valor_costo = Number((km * Number(costo_x_km)).toFixed(2));
 
 			if (ida_vuelta == 'ida') {
@@ -344,8 +393,9 @@ function calcular_distancia_viaje_celu(coord1, coord2, costo_x_km, ida_vuelta) {
 				indiceVueltas++;
 			}
 
+		} else {
+			console.error("Error al calcular la distancia:", status);
 		}
-
 	});
 
 }
